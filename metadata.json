@@ -1,0 +1,6 @@
+{
+  "name": "Viña Construcciones & Estructuras SpA",
+  "description": "Gestión de proyectos, presupuestos, cotizaciones y catálogo de construcción para Viña Construcciones & Estructuras SpA.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

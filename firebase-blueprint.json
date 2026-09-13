@@ -1,0 +1,145 @@
+{
+  "entities": {
+    "Project": {
+      "title": "Project",
+      "description": "A construction project tracking budget and costs.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 100 },
+        "address": { "type": "string", "maxLength": 200 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "budget": { "type": "number" },
+        "totalNetInvoices": { "type": "number" },
+        "totalIvaInvoices": { "type": "number" },
+        "totalExpenses": { "type": "number" },
+        "status": { "type": "string", "enum": ["active", "completed", "on-hold"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "ownerId": { "type": "string", "pattern": "^[a-zA-Z0-9_\\-]+$" }
+      },
+      "required": ["name", "budget", "status", "createdAt", "ownerId"]
+    },
+    "Invoice": {
+      "title": "Invoice",
+      "description": "An official invoice record for a project.",
+      "type": "object",
+      "properties": {
+        "projectId": { "type": "string", "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "invoiceNumber": { "type": "string", "maxLength": 50 },
+        "provider": { "type": "string", "maxLength": 100 },
+        "netAmount": { "type": "number" },
+        "iva": { "type": "number" },
+        "ivaRate": { "type": "number" },
+        "totalAmount": { "type": "number" },
+        "date": { "type": "string", "format": "date-time" },
+        "ownerId": { "type": "string", "pattern": "^[a-zA-Z0-9_\\-]+$" }
+      },
+      "required": ["projectId", "invoiceNumber", "netAmount", "iva", "totalAmount", "date", "ownerId"]
+    },
+    "Expense": {
+      "title": "Expense",
+      "description": "General expenses (labor, fuel, tools) not necessarily tied to an invoice.",
+      "type": "object",
+      "properties": {
+        "projectId": { "type": "string", "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "description": { "type": "string", "maxLength": 200 },
+        "amount": { "type": "number" },
+        "category": { "type": "string", "enum": ["labor", "fuel", "tools", "other"] },
+        "date": { "type": "string", "format": "date-time" },
+        "ownerId": { "type": "string", "pattern": "^[a-zA-Z0-9_\\-]+$" }
+      },
+      "required": ["projectId", "description", "amount", "category", "date", "ownerId"]
+    },
+    "Material": {
+      "title": "Material",
+      "description": "Construction material catalog data.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 100 },
+        "category": { "type": "string", "maxLength": 50 },
+        "unit": { "type": "string", "maxLength": 20 },
+        "estimatedPrice": { "type": "number" },
+        "description": { "type": "string", "maxLength": 500 }
+      },
+      "required": ["name", "category", "unit"]
+    },
+    "Note": {
+      "title": "Note",
+      "description": "Daily progress notes for a project.",
+      "type": "object",
+      "properties": {
+        "projectId": { "type": "string", "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "content": { "type": "string", "maxLength": 2000 },
+        "date": { "type": "string", "format": "date-time" },
+        "ownerId": { "type": "string", "pattern": "^[a-zA-Z0-9_\\-]+$" }
+      },
+      "required": ["projectId", "content", "date", "ownerId"]
+    },
+    "InventoryItem": {
+      "title": "InventoryItem",
+      "description": "Items in the warehouse/bodega inventory for a project.",
+      "type": "object",
+      "properties": {
+        "projectId": { "type": "string", "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "maxLength": 200 },
+        "category": { "type": "string", "enum": ["materials", "tools", "safety", "consumibles", "other"] },
+        "quantity": { "type": "number" },
+        "unit": { "type": "string", "maxLength": 50 },
+        "location": { "type": "string", "maxLength": 100 },
+        "status": { "type": "string", "enum": ["available", "in-use", "low-stock", "out-of-stock"] },
+        "responsible": { "type": "string", "maxLength": 100 },
+        "lastUpdated": { "type": "string", "format": "date-time" },
+        "ownerId": { "type": "string", "pattern": "^[a-zA-Z0-9_\\-]+$" }
+      },
+      "required": ["projectId", "name", "category", "quantity", "unit", "status", "lastUpdated", "ownerId"]
+    },
+    "Quotation": {
+      "title": "Quotation",
+      "description": "Itemized official contractor quotation or bid proposal.",
+      "type": "object",
+      "properties": {
+        "projectId": { "type": "string", "maxLength": 100 },
+        "name": { "type": "string", "maxLength": 200 },
+        "date": { "type": "string" },
+        "totalNet": { "type": "number" },
+        "status": { "type": "string", "enum": ["draft", "approved"] },
+        "ownerId": { "type": "string", "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "clientName": { "type": "string", "maxLength": 200 },
+        "clientRut": { "type": "string", "maxLength": 50 },
+        "clientAddress": { "type": "string", "maxLength": 300 },
+        "projectGlosa": { "type": "string", "maxLength": 1000 },
+        "deliveryDays": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["projectId", "name", "totalNet", "status"]
+    }
+  },
+  "firestore": {
+    "projects": {
+      "schema": { "$ref": "#/entities/Project" },
+      "description": "Collection of construction projects."
+    },
+    "quotations": {
+      "schema": { "$ref": "#/entities/Quotation" },
+      "description": "Collection of official contractor quotes and itemized bids."
+    },
+    "invoices": {
+      "schema": { "$ref": "#/entities/Invoice" },
+      "description": "Collection of invoices linked to projects."
+    },
+    "expenses": {
+      "schema": { "$ref": "#/entities/Expense" },
+      "description": "Collection of general expenses."
+    },
+    "materials": {
+      "schema": { "$ref": "#/entities/Material" },
+      "description": "Collection of construction materials."
+    },
+    "notes": {
+      "schema": { "$ref": "#/entities/Note" },
+      "description": "Collection of project progress notes."
+    },
+    "inventory": {
+      "schema": { "$ref": "#/entities/InventoryItem" },
+      "description": "Collection of inventory items."
+    }
+  }
+}

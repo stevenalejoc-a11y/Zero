@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  html, body {
+    @apply bg-white dark:bg-black text-zinc-900 dark:text-zinc-100 transition-colors duration-200 antialiased;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  }
+  
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* Custom sleek scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(161, 161, 170, 0.3);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(113, 113, 122, 0.6);
+}
+
+@layer utilities {
+  .pdf-mode .pdf-only {
+    display: flex !important;
+  }
+  
+  .pdf-mode {
+    padding: 20mm !important;
+    background-color: white !important;
+    color: black !important;
+  }
+
+  /* html2canvas oklch/oklab fallback */
+  .pdf-mode, .pdf-mode *, .pdf-render-root, .pdf-render-root * {
+    color: #1e293b !important;
+    border-color: #e2e8f0 !important;
+    text-decoration-color: #1e293b !important;
+    outline-color: #1e293b !important;
+  }
+
+  .pdf-mode .no-print {
+    display: none !important;
+  }
+
+  /* Specific color overrides to avoid oklch errors */
+  .pdf-mode .bg-blue-600 { background-color: #2563eb !important; }
+  .pdf-mode .bg-blue-50 { background-color: #eff6ff !important; }
+  .pdf-mode .bg-slate-50 { background-color: #f8fafc !important; }
+  .pdf-mode .bg-slate-100 { background-color: #f1f5f9 !important; }
+  .pdf-mode .bg-slate-900 { background-color: #0f172a !important; }
+  .pdf-mode .text-slate-900 { color: #0f172a !important; }
+  .pdf-mode .text-slate-500 { color: #64748b !important; }
+  .pdf-mode .text-blue-600 { color: #2563eb !important; }
+  .pdf-mode .text-green-600 { color: #16a34a !important; }
+  .pdf-mode .text-red-600 { color: #dc2626 !important; }
+  .pdf-mode .border-blue-600 { border-color: #2563eb !important; }
+  .pdf-mode .border-slate-200 { border-color: #e2e8f0 !important; }
+}
+
